@@ -24,7 +24,7 @@
         
         <div class="box">
             <b>1. PASTE GITHUB RAW URL:</b>
-            <input type="text" id="githubUrl" placeholder="disini pastenya">
+            <input type="text" id="githubUrl" placeholder="https://raw.githubusercontent.com/testgene/.../Test1.Lua">
             <button onclick="convertUrl()">CONVERT TO LOADSTRING</button>
         </div>
         
@@ -162,7 +162,7 @@ function saveToHistory(source, loadstring) {
 }
 
 // Load contoh URL
-document.getElementById('githubUrl').value = 'https://raw.githubusercontent.com/tryoufrik-web/Uchub/refs/heads/main/Test1.Lua';
+document.getElementById('githubUrl').value = 'https://raw.githubusercontent.com/lore/Ugomb/refs/heads/main/Test1.Lua';
 
 // Auto-convert saat halaman load
 window.onload = function() {

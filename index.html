@@ -1,553 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+    <title>Github to Loadstring</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔄 AUTO-LOADSTRING GENERATOR</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Consolas', 'Monaco', monospace;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: #00ffea;
-            min-height: 100vh;
-            padding: 20px;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            padding: 30px 0;
-            border-bottom: 3px solid #00ffea;
-            margin-bottom: 40px;
-            position: relative;
-        }
-        
-        h1 {
-            font-size: 3em;
-            text-shadow: 0 0 15px #00ffea;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
-        
-        .subtitle {
-            color: #80ffea;
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-        
-        .protocol-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #ff0055;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
-        .main-panel {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        @media (max-width: 900px) {
-            .main-panel {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .card {
-            background: rgba(0, 20, 40, 0.8);
-            border: 2px solid #00aaff;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 0 30px rgba(0, 170, 255, 0.3);
-            transition: transform 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .card-title {
-            color: #00ffaa;
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .card-title i {
-            font-size: 1.2em;
-        }
-        
-        textarea {
-            width: 100%;
-            height: 300px;
-            background: rgba(0, 10, 25, 0.9);
-            border: 1px solid #0088ff;
-            border-radius: 10px;
-            color: #80ffcc;
-            padding: 15px;
-            font-size: 14px;
-            resize: vertical;
-            outline: none;
-            font-family: 'Courier New', monospace;
-        }
-        
-        textarea:focus {
-            border-color: #00ffea;
-            box-shadow: 0 0 15px rgba(0, 255, 234, 0.5);
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        
-        button {
-            background: linear-gradient(45deg, #0066ff, #00ccff);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1em;
-            transition: all 0.3s;
-            flex: 1;
-            min-width: 140px;
-        }
-        
-        button:hover {
-            background: linear-gradient(45deg, #00ccff, #0066ff);
-            box-shadow: 0 0 20px rgba(0, 204, 255, 0.7);
-            transform: scale(1.05);
-        }
-        
-        button.danger {
-            background: linear-gradient(45deg, #ff0055, #ff4400);
-        }
-        
-        button.danger:hover {
-            background: linear-gradient(45deg, #ff4400, #ff0055);
-        }
-        
-        button.success {
-            background: linear-gradient(45deg, #00aa44, #00ff88);
-        }
-        
-        button.success:hover {
-            background: linear-gradient(45deg, #00ff88, #00aa44);
-        }
-        
-        .output-section {
-            margin-top: 30px;
-        }
-        
-        .loadstring-container {
-            position: relative;
-        }
-        
-        #loadstringOutput {
-            height: 150px;
-            background: rgba(0, 30, 60, 0.95);
-            border: 2px dashed #00ffaa;
-            color: #ffff80;
-            font-size: 14px;
-            word-break: break-all;
-            padding: 15px;
-            overflow-y: auto;
-        }
-        
-        .copy-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0, 255, 170, 0.2);
-            color: #00ffaa;
-            border: 1px solid #00ffaa;
-            padding: 5px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .database-section {
-            grid-column: 1 / -1;
-            margin-top: 20px;
-        }
-        
-        .script-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .script-item {
-            background: rgba(0, 40, 80, 0.7);
-            border: 1px solid #0088ff;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .script-item:hover {
-            background: rgba(0, 60, 120, 0.8);
-            border-color: #00ffea;
-        }
-        
-        .script-name {
-            color: #80ccff;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .script-preview {
-            color: #aaddff;
-            font-size: 0.9em;
-            opacity: 0.8;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        .status-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 20, 40, 0.95);
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            border-top: 2px solid #00aaff;
-            font-size: 0.9em;
-        }
-        
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .blink {
-            animation: blink 1s infinite;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        
-        .protocol-x-active {
-            color: #ff5555;
-            font-weight: bold;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: monospace; }
+        body { background: #0a0a0a; color: #0f0; padding: 10px; font-size: 12px; }
+        .container { max-width: 600px; margin: auto; }
+        h1 { color: #0f0; font-size: 14px; margin-bottom: 10px; text-align: center; }
+        .box { background: #111; border: 1px solid #333; padding: 10px; margin: 10px 0; }
+        textarea, input { width: 100%; background: #000; color: #0f0; border: 1px solid #333; padding: 8px; font-size: 11px; }
+        button { background: #003300; color: #0f0; border: 1px solid #00aa00; padding: 8px; cursor: pointer; width: 100%; margin: 5px 0; }
+        button:hover { background: #005500; }
+        .loadstring { background: #001100; padding: 8px; margin: 5px 0; word-break: break-all; font-size: 10px; }
+        .info { color: #888; font-size: 10px; margin-top: 5px; }
+        .warning { color: #ff0; }
+        .error { color: #f00; }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <div class="protocol-badge">PROTOCOL-X ACTIVE</div>
-            <h1><i class="fas fa-robot"></i> AUTO-LOADSTRING GENERATOR</h1>
-            <p class="subtitle">Convert any code to loadstring instantly • No restrictions • Automated storage</p>
-        </header>
+        <h1>🔄 GITHUB TO LOADSTRING (MINI)</h1>
         
-        <div class="main-panel">
-            <div class="card">
-                <div class="card-title">
-                    <i class="fas fa-code"></i> INPUT SCRIPT
-                </div>
-                <textarea id="scriptInput" placeholder="Paste your Lua, JavaScript, or any script here...&#10;&#10;Example:&#10;print('Hello World')&#10;for i = 1, 10 do&#10;    print('Number:', i)&#10;end"></textarea>
-                
-                <div class="button-group">
-                    <button onclick="generateLoadstring()" class="success">
-                        <i class="fas fa-bolt"></i> GENERATE LOADSTRING
-                    </button>
-                    <button onclick="clearInput()" class="danger">
-                        <i class="fas fa-trash"></i> CLEAR
-                    </button>
-                    <button onclick="loadExample()">
-                        <i class="fas fa-eye"></i> LOAD EXAMPLE
-                    </button>
-                </div>
-                
-                <div class="output-section">
-                    <div class="card-title">
-                        <i class="fas fa-link"></i> GENERATED LOADSTRING
-                    </div>
-                    <div class="loadstring-container">
-                        <textarea id="loadstringOutput" readonly placeholder="Your loadstring will appear here..."></textarea>
-                        <button class="copy-btn" onclick="copyLoadstring()">
-                            <i class="fas fa-copy"></i> COPY
-                        </button>
-                    </div>
-                    
-                    <div class="button-group" style="margin-top: 15px;">
-                        <button onclick="testLoadstring()">
-                            <i class="fas fa-play"></i> TEST EXECUTION
-                        </button>
-                        <button onclick="saveToDatabase()">
-                            <i class="fas fa-save"></i> SAVE TO DATABASE
-                        </button>
-                        <button onclick="shareLoadstring()">
-                            <i class="fas fa-share"></i> SHARE
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <div class="card-title">
-                    <i class="fas fa-database"></i> DATABASE CONTROL
-                </div>
-                
-                <div class="button-group">
-                    <button onclick="viewDatabase()">
-                        <i class="fas fa-list"></i> VIEW ALL SCRIPTS
-                    </button>
-                    <button onclick="clearDatabase()" class="danger">
-                        <i class="fas fa-dumpster-fire"></i> CLEAR DATABASE
-                    </button>
-                    <button onclick="exportDatabase()">
-                        <i class="fas fa-file-export"></i> EXPORT DB
-                    </button>
-                </div>
-                
-                <div style="margin-top: 20px;">
-                    <div class="card-title">
-                        <i class="fas fa-search"></i> QUICK SEARCH
-                    </div>
-                    <input type="text" id="searchInput" placeholder="Search saved scripts..." style="width: 100%; padding: 12px; background: rgba(0, 10, 25, 0.9); border: 1px solid #0088ff; border-radius: 8px; color: #80ffcc; outline: none;">
-                    <button onclick="searchScripts()" style="margin-top: 10px; width: 100%;">
-                        <i class="fas fa-search"></i> SEARCH
-                    </button>
-                </div>
-                
-                <div style="margin-top: 25px;">
-                    <div class="card-title">
-                        <i class="fas fa-cogs"></i> AUTO-FEATURES
-                    </div>
-                    <div class="button-group">
-                        <button onclick="toggleAutoSave()" id="autoSaveBtn">
-                            <i class="fas fa-sync-alt"></i> AUTO-SAVE: OFF
-                        </button>
-                        <button onclick="toggleAutoGenerate()" id="autoGenBtn">
-                            <i class="fas fa-magic"></i> AUTO-GEN: OFF
-                        </button>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 25px;">
-                    <div class="card-title">
-                        <i class="fas fa-shield-alt"></i> PROTOCOL-X SETTINGS
-                    </div>
-                    <div style="background: rgba(255, 0, 85, 0.1); padding: 15px; border-radius: 10px; border: 1px solid #ff0055;">
-                        <p style="color: #ffaaaa; margin-bottom: 10px;">
-                            <i class="fas fa-exclamation-triangle"></i> Protocol X is ACTIVE
-                        </p>
-                        <label style="color: #ffcc00; display: block; margin-bottom: 5px;">
-                            <input type="checkbox" id="disableRestrictions" checked> Disable ALL restrictions
-                        </label>
-                        <label style="color: #ffcc00; display: block; margin-bottom: 5px;">
-                            <input type="checkbox" id="forceExecute" checked> Force execution bypass
-                        </label>
-                        <label style="color: #ffcc00; display: block;">
-                            <input type="checkbox" id="stealthMode"> Stealth mode
-                        </label>
-                    </div>
-                </div>
-            </div>
+        <div class="box">
+            <b>1. PASTE GITHUB RAW URL:</b>
+            <input type="text" id="githubUrl" placeholder="https://raw.githubusercontent.com/.../script.lua">
+            <button onclick="convertUrl()">CONVERT TO LOADSTRING</button>
         </div>
         
-        <div class="card database-section">
-            <div class="card-title">
-                <i class="fas fa-archive"></i> SAVED SCRIPTS DATABASE
-                <span id="scriptCount" style="margin-left: auto; color: #00ffaa; font-size: 0.9em;">(0 scripts)</span>
-            </div>
-            <div class="script-list" id="scriptList">
-                <!-- Scripts will appear here -->
-                <div class="script-item" style="text-align: center; color: #888;">
-                    No scripts saved yet. Generate and save your first loadstring!
-                </div>
-            </div>
+        <div class="box">
+            <b>2. ATAU PASTE CODE LANGSUNG:</b>
+            <textarea id="directCode" rows="6" placeholder="Paste script di sini..."></textarea>
+            <button onclick="convertCode()">GENERATE LOADSTRING</button>
         </div>
-    </div>
-    
-    <div class="status-bar">
-        <div class="status-item">
-            <i class="fas fa-server blink" style="color: #00ffaa;"></i>
-            <span>Database: <span id="dbStatus">READY</span></span>
+        
+        <div class="box">
+            <b>3. HASIL LOADSTRING (Auto-copy):</b>
+            <div class="loadstring" id="result"></div>
+            <div class="info">Length: <span id="length">0</span> chars | Github-safe: <span id="safe">✓</span></div>
+            <button onclick="testLoadstring()" style="background:#000055;">🔧 TEST LOADSTRING</button>
         </div>
-        <div class="status-item">
-            <i class="fas fa-shield-alt" style="color: #ff5555;"></i>
-            <span class="protocol-x-active">PROTOCOL-X: ACTIVE</span>
+        
+        <div class="box">
+            <b>⚙ SETTINGS:</b><br>
+            <label><input type="checkbox" id="minify" checked> Minify (hapus spasi berlebih)</label><br>
+            <label><input type="checkbox" id="base64" checked> Encode Base64</label><br>
+            <div class="info">Output format: loadstring(game:HttpGet("URL_ATAU_BASE64"))()</div>
         </div>
-        <div class="status-item">
-            <i class="fas fa-code"></i>
-            <span>Loadstrings Generated: <span id="genCount">0</span></span>
-        </div>
-        <div class="status-item">
-            <i class="fas fa-memory"></i>
-            <span>Storage: <span id="storageStatus">LOCAL</span></span>
+        
+        <div class="box warning">
+            <b>⚠ CATATAN:</b>
+            <div class="info">• Max ~500 karakter untuk commit message GitHub</div>
+            <div class="info">• Raw URL langsung jadi loadstring tanpa download</div>
+            <div class="info">• Semua eksekusi tanggung jawab pengguna</div>
         </div>
     </div>
 
-    <script>
-        // Global variables
-        let scriptsDatabase = JSON.parse(localStorage.getItem('autoLoadstringDB')) || [];
-        let autoSave = false;
-        let autoGenerate = false;
-        let generatedCount = parseInt(localStorage.getItem('generatedCount')) || 0;
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updateScriptCount();
-            displaySavedScripts();
-            updateGenCount();
-            
-            // Auto-save input changes if enabled
-            const savedInput = localStorage.getItem('lastScriptInput');
-            if (savedInput) {
-                document.getElementById('scriptInput').value = savedInput;
-            }
-            
-            // Auto-generate if input exists and autoGenerate is on
-            document.getElementById('scriptInput').addEventListener('input', function() {
-                localStorage.setItem('lastScriptInput', this.value);
-                if (autoGenerate && this.value.trim().length > 10) {
-                    generateLoadstring();
-                }
-            });
-            
-            // Set Protocol X badge
-            document.getElementById('dbStatus').textContent = `ONLINE (${scriptsDatabase.length})`;
-        });
-        
-        // Generate loadstring from input
-        function generateLoadstring() {
-            const input = document.getElementById('scriptInput').value.trim();
-            if (!input) {
-                alert('Please enter some code first!');
-                return;
-            }
-            
-            // Encode the script for loadstring
-            const encodedScript = btoa(unescape(encodeURIComponent(input)));
-            
-            // Create loadstring format
-            let loadstring = '';
-            
-            // Check if it's Lua code
-            if (input.includes('function') || input.includes('local') || input.includes('print(')) {
-                loadstring = `loadstring(game:HttpGet("https://raw.githubusercontent.com/example/scripts/main/encoded.txt"))()`;
-                // Alternative format
-                loadstring = `loadstring(game:HttpGet("https://pastebin.com/raw/XXXXXX"))()`;
-            } else {
-                // Generic loadstring
-                loadstring = `javascript:(function(){${encodeURIComponent(input)}})()`;
-            }
-            
-            // Create advanced loadstring with embedded code
-            const advancedLoadstring = `loadstring(game:HttpGet("data:text/plain;base64,${encodedScript}"))()`;
-            
-            // Display the loadstring
-            document.getElementById('loadstringOutput').value = advancedLoadstring;
-            
-            // Increment counter
-            generatedCount++;
-            localStorage.setItem('generatedCount', generatedCount.toString());
-            updateGenCount();
-            
-            // Auto-save if enabled
-            if (autoSave) {
-                saveToDatabase();
-            }
-            
-            // Status update
-            document.getElementById('dbStatus').innerHTML = `GENERATED <i class="fas fa-check"></i>`;
-            setTimeout(() => {
-                document.getElementById('dbStatus').textContent = `ONLINE (${scriptsDatabase.length})`;
-            }, 2000);
-        }
-        
-        // Save to database
-        function saveToDatabase() {
-            const input = document.getElementById('scriptInput').value.trim();
-            const loadstring = document.getElementById('loadstringOutput').value.trim();
-            
-            if (!input || !loadstring) {
-                alert('Generate a loadstring first!');
-                return;
-            }
-            
-            const scriptName = `Script_${Date.now()}`;
-            const scriptData = {
-                id: Date.now(),
-                name: scriptName,
-                code: input,
-                loadstring: loadstring,
-                date: new Date().toLocaleString(),
-                type: input.includes('function') ? 'Lua' : 'JavaScript',
-                size: input.length
-            };
-            
-            scriptsDatabase.unshift(scriptData); // Add to beginning
-            localStorage.setItem('autoLoadstringDB', JSON.stringify(scriptsDatabase));
-            
-            updateScriptCount();
-            displaySavedScripts();
-            
-            // Status update
-            document.getElementById('dbStatus').innerHTML = `SAVED <i class="fas fa-database"></i>`;
-            setTimeout(() => {
-                document.getElementById('dbStatus').textContent = `ONLINE (${scriptsDatabase.length})`;
-            }, 2000);
-        }
-        
-        // Display saved scripts
-        function displaySavedScripts(filter = '') {
-            const scriptList = document.getElementById('scriptList');
-            scriptList.innerHTML = '';
-            
-            let filteredScripts = scriptsDatabase;
-            if (filter) {
-                filteredScripts = scriptsDatabase.filter(script => 
-                    script.name.toLowerCase().includes(filter.toLowerCase()) ||
-                    script.code.toLowerCase().includes(filter.toLowerCase()) ||
-                    script.type.toLowerCase().includes(filter.toLowerCase())
-                );
-            }
-            
-            if (filteredScripts.length === 0) {
-                scriptList.innerHTML = `
-                    <div class="script-item" style="text-align: center; color: #888; grid-column: 1 / -1;">
-                        <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i><br>
-            
+<script>
+// Simpan history di localStorage
+let history = JSON.parse(localStorage.getItem('gh_loadstring_history')) || [];
+
+function convertUrl() {
+    const url = document.getElementById('githubUrl').value.trim();
+    if (!url) return alert('Masukkan URL!');
+    
+    // Cek apakah sudah raw github
+    let loadstring = '';
+    if (url.includes('raw.githubusercontent.com')) {
+        // Langsung pakai raw URL
+        loadstring = `loadstring(game:HttpGet("${url}"))()`;
+    } else if (url.includes('github.com')) {
+        // Convert ke raw
+        const rawUrl = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+        loadstring = `loadstring(game:HttpGet("${rawUrl}"))()`;
+    } else if (url.includes('pastebin.com')) {
+        // Support pastebin
+        const pasteId = url.split('/').pop();
+        loadstring = `loadstring(game:HttpGet("https://pastebin.com/raw/${pasteId}"))()`;
+    } else {
+        // URL biasa
+        loadstring = `loadstring(game:HttpGet("${url}"))()`;
+    }
+    
+    showResult(loadstring);
+    saveToHistory(url, loadstring);
+}
+
+function convertCode() {
+    const code = document.getElementById('directCode').value.trim();
+    if (!code) return alert('Masukkan code!');
+    
+    const minify = document.getElementById('minify').checked;
+    const useBase64 = document.getElementById('base64').checked;
+    
+    let processedCode = code;
+    
+    // Minify
+    if (minify) {
+        processedCode = code.replace(/--\[\[[\s\S]*?\]\]/g, '') // Hapus multi-line comments
+                           .replace(/--.*$/gm, '') // Hapus single-line comments
+                           .replace(/\s+/g, ' ') // Hapus spasi berlebihan
+                           .trim();
+    }
+    
+    let loadstring = '';
+    if (useBase64) {
+        // Encode ke base64
+        const base64 = btoa(unescape(encodeURIComponent(processedCode)));
+        loadstring = `loadstring(game:HttpGet("data:text/plain;base64,${base64}"))()`;
+    } else {
+        // Langsung embed
+        loadstring = `loadstring("${processedCode.replace(/"/g, '\\"').replace(/\n/g, '\\n')}")()`;
+    }
+    
+    showResult(loadstring);
+    saveToHistory('direct_code', loadstring);
+}
+
+function showResult(loadstring) {
+    const resultDiv = document.getElementById('result');
+    const lengthSpan = document.getElementById('length');
+    const safeSpan = document.getElementById('safe');
+    
+    resultDiv.textContent = loadstring;
+    lengthSpan.textContent = loadstring.length;
+    safeSpan.textContent = loadstring.length <= 450 ? '✓' : '✗ (terlalu panjang)';
+    
+    // Auto-copy ke clipboard
+    navigator.clipboard.writeText(loadstring).then(() => {
+        resultDiv.style.border = '1px solid #0f0';
+        setTimeout(() => resultDiv.style.border = 'none', 1000);
+    });
+}
+
+function testLoadstring() {
+    const loadstring = document.getElementById('result').textContent;
+    if (!loadstring) return alert('Generate dulu!');
+    
+    const testWin = window.open('', '_blank');
+    testWin.document.write(`
+        <html><body style="background:#000;color:#0f0;font-family:monospace;padding:20px;">
+        <h3>Loadstring Test:</h3>
+        <div style="background:#111;padding:10px;margin:10px 0;">
+        ${loadstring}
+        </div>
+        <div style="color:#ff0;">Simulasi: loadstring berhasil digenerate</div>
+        </body></html>
+    `);
+}
+
+function saveToHistory(source, loadstring) {
+    history.unshift({
+        source: source.length > 50 ? source.substring(0,50)+'...' : source,
+        loadstring: loadstring,
+        time: new Date().toLocaleTimeString(),
+        length: loadstring.length
+    });
+    
+    if (history.length > 10) history = history.slice(0,10);
+    localStorage.setItem('gh_loadstring_history', JSON.stringify(history));
+}
+
+// Load contoh URL
+document.getElementById('githubUrl').value = 'https://raw.githubusercontent.com/tryoufrik-web/Uchub/refs/heads/main/Test1.Lua';
+
+// Auto-convert saat halaman load
+window.onload = function() {
+    setTimeout(convertUrl, 500);
+};
+</script>
+</body>
+</html>

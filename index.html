@@ -294,20 +294,8 @@
             <div class="loadstring-output" id="outputBox">
                 <div style="color: #888;">Your loadstring will appear here...</div>
                 <button class="copy-btn" onclick="copyToClipboard()">📋 Copy</button>
-            </div>
-            
-            <div class="shortcuts">
-                <div class="shortcut-btn" onclick="loadExample('lag')">💣 Lag Hub</div>
-                <div class="shortcut-btn" onclick="loadExample('executor')">⚡ Executor</div>
-                <div class="shortcut-btn" onclick="loadExample('aimbot')">🎯 Aimbot</div>
-                <div class="shortcut-btn" onclick="loadExample('fly')">✈️ Fly</div>
-                <div class="shortcut-btn" onclick="loadExample('esp')">👁️ ESP</div>
-                <div class="shortcut-btn" onclick="loadExample('fish')">🎣 Fish It</div>
-                <div class="shortcut-btn" onclick="loadExample('infinite')">∞ Infinite Yield</div>
-                <div class="shortcut-btn" onclick="loadExample('dex')">🔍 DEX</div>
-            </div>
-        </div>
-        
+            </div 
+                
         <div class="preview-section">
             <div class="preview-title">👁️ Preview:</div>
             <div class="preview-code" id="previewCode">
@@ -453,19 +441,6 @@ loadstring(game:HttpGet("URL_HERE"))()
                     updateStatus('❌ URL is not accessible!', '#f00');
                 });
         }
-        
-        // Load example URLs
-        function loadExample(type) {
-            const examples = {
-                'lag': 'https://raw.githubusercontent.com/tryoufrik-web/Lag-hub/refs/heads/main/main.lua',
-                'executor': 'https://raw.githubusercontent.com/OxyX/ExecutorHub/main/Main.lua',
-                'aimbot': 'https://raw.githubusercontent.com/OxyX/Aimbot/main/SilentAim.lua',
-                'fly': 'https://raw.githubusercontent.com/OxyX/Fly/main/FlyV3.lua',
-                'esp': 'https://raw.githubusercontent.com/OxyX/ESP/main/Wallhack.lua',
-                'fish': 'https://raw.githubusercontent.com/OxyX/FishIt/main/AutoFish.lua',
-                'infinite': 'https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source',
-                'dex': 'https://raw.githubusercontent.com/infyiff/backup/main/dex.lua'
-            };
             
             if (examples[type]) {
                 document.getElementById('inputUrl').value = examples[type];
